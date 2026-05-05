@@ -1,11 +1,13 @@
+import copy
 from collections import deque
+
 
 def calculate_avg(times):
     return sum(times) / len(times) if times else 0
 
 
 def fcfs(processes):
-    processes = sorted(processes, key=lambda x: x['arrival'])
+    processes = sorted(copy.deepcopy(processes), key=lambda x: x['arrival'])
     time = 0
     result = []
 
@@ -25,7 +27,8 @@ def fcfs(processes):
 
 
 def sjf(processes):
-    processes = sorted(processes, key=lambda x: (x['arrival'], x['burst']))
+    # BUG FIX: deep copy so original list is never mutated between runs
+    processes = sorted(copy.deepcopy(processes), key=lambda x: (x['arrival'], x['burst']))
     time = 0
     completed = []
     ready = []
@@ -54,7 +57,8 @@ def sjf(processes):
 
 
 def priority_scheduling(processes):
-    processes = sorted(processes, key=lambda x: (x['arrival'], x['priority']))
+    # BUG FIX: deep copy so original list is never mutated between runs
+    processes = sorted(copy.deepcopy(processes), key=lambda x: (x['arrival'], x['priority']))
     time = 0
     completed = []
     ready = []
@@ -85,7 +89,8 @@ def priority_scheduling(processes):
 def round_robin(processes, quantum):
     queue = deque()
     time = 0
-    processes = sorted(processes, key=lambda x: x['arrival'])
+    # BUG FIX: deep copy so original list is never mutated between runs
+    processes = sorted(copy.deepcopy(processes), key=lambda x: x['arrival'])
     remaining = {p['pid']: p['burst'] for p in processes}
     completed = []
     timeline = []
